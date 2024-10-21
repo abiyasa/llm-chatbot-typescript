@@ -1,7 +1,8 @@
 import { parse } from "marked";
-import { Message } from "@/hooks/chat";
+import { type Message } from "@/hooks/chat";
 
 function fixMarkdown(message: Message): string {
+  const ali = parse('ali');
   return parse(message.content).replace(
     '<a href="',
     '<a target="_blank" href="'

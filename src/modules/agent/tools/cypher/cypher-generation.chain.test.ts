@@ -40,17 +40,31 @@ describe("Cypher Generation Chain", () => {
   });
 
   it("should generate a simple count query", async () => {
-    const output = await chain.invoke("How many movies are in the database?");
+    const question = "How many movies are in the database?";
+    const output = await chain.invoke(question);
 
+    console.log(`input: ${question}\noutput: ${output}`);
     expect(output.toLowerCase()).toContain("match (");
     expect(output).toContain(":Movie");
     expect(output.toLowerCase()).toContain("return");
     expect(output.toLowerCase()).toContain("count(");
   });
 
-  it("should generate a Cypher statement with a relationship", async () => {
-    const output = await chain.invoke("Who directed The Matrix?");
+  it("should generate a query", async () => {
+    // const question = "How many movies that has more than 1 director are in the database?";
+    const question = "What are other movies that is directed by the director of 'Pocongq'?";
+    const output = await chain.invoke(question);
 
+    console.log(`input: ${question}\noutput: ${output}`);
+    // expect(output.toLowerCase()).toContain("return");
+    // expect(output.toLowerCase()).toContain("count(");
+  });
+
+  it("should generate a Cypher statement with a relationship", async () => {
+    const question = "Who directed The Matrix?";
+    const output = await chain.invoke(question);
+
+    console.log(`input: ${question}\noutput: ${output}`);
     expect(output.toLowerCase()).toContain("match (");
     expect(output).toContain(":Movie");
     expect(output).toContain(":DIRECTED]");

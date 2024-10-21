@@ -59,6 +59,8 @@ describe("Langchain Agent", () => {
         }
       );
 
+      console.log(`input: ${input}\noutput: ${JSON.stringify(output)}`);
+
       // Check database
       const sessionRes = await graph.query(
         `

@@ -44,7 +44,10 @@ describe("Cypher Evaluation Chain", () => {
       errors: ["Label Muvee does not exist"],
     };
 
-    const { cypher, errors } = await chain.invoke(input);
+    const { cypher, corrected, errors } = await chain.invoke(input);
+
+    console.log(`input cypher: ${input.cypher}\ninput errors: ${JSON.stringify(input.errors)}`);
+    console.log(`cypher: ${cypher}\ncorrected: ${corrected}\nerrors: ${JSON.stringify(errors)}`);
 
     expect(cypher).toContain("MATCH (m:Movie) RETURN count(m) AS count");
 
@@ -73,7 +76,10 @@ describe("Cypher Evaluation Chain", () => {
       ],
     };
 
-    const { cypher, errors } = await chain.invoke(input);
+    const { cypher, corrected, errors } = await chain.invoke(input);
+
+    console.log(`input cypher: ${input.cypher}\ninput errors: ${JSON.stringify(input.errors)}`);
+    console.log(`cypher: ${cypher}\ncorrected: ${corrected}\nerrors: ${JSON.stringify(errors)}`);
 
     expect(cypher).toContain("MATCH (m:Movie");
     expect(cypher).toContain(":ACTED_IN");
@@ -100,7 +106,10 @@ describe("Cypher Evaluation Chain", () => {
       errors: ["Label Muvee does not exist"],
     };
 
-    const { cypher: updatedCypher, errors } = await chain.invoke(input);
+    const { cypher: updatedCypher, corrected, errors } = await chain.invoke(input);
+
+    console.log(`input cypher: ${input.cypher}\ninput errors: ${JSON.stringify(input.errors)}`);
+    console.log(`cypher: ${updatedCypher}\ncorrected: ${corrected}\nerrors: ${JSON.stringify(errors)}`);
 
     expect(updatedCypher).toContain(cypher);
     expect(errors.length).toBe(0);
@@ -117,7 +126,10 @@ describe("Cypher Evaluation Chain", () => {
       errors: [],
     };
 
-    const { cypher: updatedCypher, errors } = await chain.invoke(input);
+    const { cypher: updatedCypher, corrected, errors } = await chain.invoke(input);
+
+    console.log(`input cypher: ${input.cypher}\ninput errors: ${JSON.stringify(input.errors)}`);
+    console.log(`cypher: ${updatedCypher}\ncorrected: ${corrected}\nerrors: ${JSON.stringify(errors)}`);
 
     expect(updatedCypher).toContain(cypher);
     expect(errors.length).toBe(0);

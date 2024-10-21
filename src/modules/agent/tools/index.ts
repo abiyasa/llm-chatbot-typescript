@@ -6,6 +6,7 @@ import initVectorRetrievalChain from "./vector-retrieval.chain";
 import { DynamicStructuredTool } from "@langchain/community/tools/dynamic";
 import { AgentToolInputSchema } from "../agent.types";
 import { RunnableConfig } from "langchain/runnables";
+import { ZodObject } from "zod";
 
 // tag::function[]
 export default async function initTools(
@@ -13,11 +14,28 @@ export default async function initTools(
   embeddings: Embeddings,
   graph: Neo4jGraph
 ): Promise<DynamicStructuredTool[]> {
-  // TODO: Initiate chains
-  // const cypherChain = await ...
-  // const retrievalChain = await ...
+  // Initiate chains
+  const cypherChain = await initCypherRetrievalChain(llm, graph);
+  const retrievalChain = await initVectorRetrievalChain(llm, embeddings);
 
-  // TODO: Append chains to output
-  return [];
+  const d2: DynamicStructuredTool = new DynamicStructuredTool({
+    name: "graph-vector-retrieval-chain",
+    description:
+      "For finding movies, comparing movies by their plot or recommending a movie based on a theme",
+    schema: AgentToolInputSchema,
+    func: (input, _runManager: any, config) =>
+      retrievalChain.invoke(input, config),
+  });
+
+  return [
+    new DynamicStructuredTool({
+      name: "graph-cypher-retrieval-chain",
+      description:
+        "For retrieving movie information from the database including movie recommendations, actors and user ratings",
+      schema: AgentToolInputSchema,
+      func: (input, _runManager, config) => cypherChain.invoke(input, config),
+    }),
+    d2,
+  ];
 }
 // end::function[]

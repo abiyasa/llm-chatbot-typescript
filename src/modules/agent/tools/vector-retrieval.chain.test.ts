@@ -62,6 +62,7 @@ describe("Vector Retrieval Chain", () => {
     );
 
     // Should generate an answer
+    console.log(output);
     expect(output).toBeDefined();
 
     // Should save to the database
@@ -85,6 +86,10 @@ describe("Vector Retrieval Chain", () => {
     expect(first.rephrasedQuestion).toEqual(rephrasedQuestion);
     expect(first.output).toEqual(output);
     expect(first.input).toEqual(input);
+
+    console.log(`input: ${first.input}`);
+    console.log(`rephrasedQuestion: ${first.rephrasedQuestion}`);
+    console.log(`output: ${first.output}`);
 
     // Should save with context
     expect(first.context.length).toBeGreaterThanOrEqual(1);

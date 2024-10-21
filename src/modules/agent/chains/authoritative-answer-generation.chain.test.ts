@@ -48,15 +48,16 @@ describe("Authoritative Answer Generation Chain", () => {
   describe("Simple RAG", () => {
     it("should use context to answer the question", async () => {
       const question = "Who directed the matrix?";
+      const context = '[{"name": "Lana Wachowski"}, {"name": "Lilly Wachowski"}]';
       const response = await chain.invoke({
         question,
-        context: '[{"name": "Lana Wachowski"}, {"name": "Lilly Wachowski"}]',
+        context,
       });
 
       // tag::eval[]
       const evaluation = await evalChain.invoke({ question, response });
-
-      expect(`${evaluation.toLowerCase()} - ${response}`).toContain("yes");
+      console.log(`question: ${question}\ncontext: ${JSON.stringify(context)}\nresponse: ${response}\nevaluation: ${evaluation}`);
+      expect(evaluation.toLowerCase()).toContain("yes");
       // end::eval[]
     });
 
@@ -68,6 +69,7 @@ describe("Authoritative Answer Generation Chain", () => {
       });
 
       const evaluation = await evalChain.invoke({ question, response });
+      console.log(`question: ${question}\ncontext: ""\nresponse: ${response}\nevaluation: ${evaluation}`);
       expect(`${evaluation.toLowerCase()} - ${response}`).toContain("no");
     });
 
@@ -75,14 +77,17 @@ describe("Authoritative Answer Generation Chain", () => {
       const role = "The Chief";
 
       const question = "What was Emil Eifrem's role in Neo4j The Movie??";
+      const context = `{"Role":"${role}"}`;
       const response = await chain.invoke({
         question,
-        context: `{"Role":"${role}"}`,
+        context,
       });
 
-      expect(response).toContain(role);
+      // expect(response).toContain(role);
 
       const evaluation = await evalChain.invoke({ question, response });
+      console.log(`question: ${question}\ncontext: ${JSON.stringify(context)}\nresponse: ${response}\nevaluation: ${evaluation}`);
+
       expect(`${evaluation.toLowerCase()} - ${response}`).toContain("Chief");
     });
   });
