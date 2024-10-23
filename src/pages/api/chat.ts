@@ -1,10 +1,8 @@
-import { call } from "@/modules/agent";
+import { call, SimpleStringMessage, MapData } from "@/modules/agent";
 import { randomUUID } from "crypto";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type ResponseData = {
-  message: string;
-};
+export type ResponseData = SimpleStringMessage | MapData;
 
 function getSessionId(req: NextApiRequest, res: NextApiResponse): string {
   let sessionId: string | undefined = req.cookies["session"];
@@ -34,15 +32,14 @@ export default async function handler(
     try {
       const result = await call(message, sessionId);
 
-      res.status(201).json({
-        message: result,
-      });
+      res.status(201).json(result);
     } catch (e: any) {
       res.status(500).json({
+        type: "simple",
         message: `I'm suffering from brain fog...\n\n${e.message}`,
       });
     }
   } else {
-    res.status(404).send({ message: "Route not found" });
+    res.status(404).send({ type: "simple", message: "Route not found" });
   }
 }

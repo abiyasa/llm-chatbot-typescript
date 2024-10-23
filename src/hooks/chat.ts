@@ -1,9 +1,15 @@
 import { useEffect, useRef, useState } from "react";
+import { type ResponseData } from "../pages/api/chat";
 
-export type Message = {
+export type StringMessage = {
   role: "human" | "ai";
   content: string;
 };
+export type MapMessage = {
+  role: "map";
+  mapData: { lat: number; lng: number }[];
+};
+export type Message = StringMessage | MapMessage;
 
 export default function useChat() {
   const [thinking, setThinking] = useState<boolean>(false);
@@ -31,9 +37,13 @@ export default function useChat() {
       });
 
       // Append the API message to the state
-      const json = await response.json();
+      const json = await response.json() as ResponseData;
 
-      messages.push({ role: "ai", content: json.message });
+      if (json.type === "map") {
+        messages.push({ role: "map", mapData: json.data });
+      } else {
+        messages.push({ role: "ai", content: json.message });
+      }
 
       setMessages(messages);
     } catch (e) {
