@@ -1,8 +1,10 @@
 import { call, SimpleStringMessage, MapData } from "@/modules/agent";
+import { Point } from "@/modules/agent/agent.types";
 import { randomUUID } from "crypto";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export type ResponseData = SimpleStringMessage | MapData;
+export type { Point };
 
 function getSessionId(req: NextApiRequest, res: NextApiResponse): string {
   let sessionId: string | undefined = req.cookies["session"];

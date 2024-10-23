@@ -23,3 +23,5 @@ export const AgentToolInputSchema = z.object({
     ),
 });
 // end::schema[]
+
+export type Point = { lat: number, lng: number };

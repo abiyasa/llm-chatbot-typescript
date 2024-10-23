@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { type ResponseData } from "../pages/api/chat";
+import { Point, type ResponseData } from "../pages/api/chat";
 
 export type StringMessage = {
   role: "human" | "ai";
@@ -7,7 +7,7 @@ export type StringMessage = {
 };
 export type MapMessage = {
   role: "map";
-  mapData: { lat: number; lng: number }[];
+  mapData: Point[];
 };
 export type Message = StringMessage | MapMessage;
 

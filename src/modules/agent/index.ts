@@ -3,9 +3,9 @@ import { OpenAIEmbeddings } from "@langchain/openai";
 import initAgent from "./agent";
 import { initGraph } from "../graph";
 import { sleep } from "@/utils";
+import { Point } from "./agent.types";
 
 export type SimpleStringMessage = { type: "simple", message: string, };
-export type Point = { lat: number, lng: number };
 export type MapData = { type: "map", data: Point[] };
 
 // tag::call[]

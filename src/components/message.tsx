@@ -1,5 +1,13 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import { parse } from "marked";
 import { MapMessage, StringMessage, type Message } from "@/hooks/chat";
+
+const LazyMap = dynamic(() => import("@/components/map"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 export default function Message({ message }: { message: Message }) {
   const isAIMessage = message.role === "ai" || message.role === "map";
@@ -14,7 +22,7 @@ export default function Message({ message }: { message: Message }) {
       <div className="flex flex-col space-y-2 text-sm mx-2 max-w-[60%] order-2 items-start">
         <div className={`bg-${background}-100 p-4 rounded-xl ${no_rounding}`}>
           {isMapMessage(message) ? (
-            <div>[MAP]</div>
+            <div><LazyMap center={message.mapData[0]} /></div>
           ) : (
             <div
               dangerouslySetInnerHTML={{
