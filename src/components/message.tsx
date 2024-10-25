@@ -22,7 +22,7 @@ export default function Message({ message }: { message: Message }) {
       <div className="flex flex-col space-y-2 text-sm mx-2 max-w-[60%] order-2 items-start">
         <div className={`bg-${background}-100 p-4 rounded-xl ${no_rounding}`}>
           {isMapMessage(message) ? (
-            <div><LazyMap center={message.mapData[0]} /></div>
+            <div><LazyMap center={message.mapData[0]} routes={message.mapData} /></div>
           ) : (
             <div
               dangerouslySetInnerHTML={{
